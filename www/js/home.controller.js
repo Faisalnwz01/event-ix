@@ -62,11 +62,9 @@
         searchHotel.hotelList.forEach(function (hotel) {
           DataService.priceForHotels(hotel.hotelId, item.dates.from, item.dates.to)
           .then(function (hotelWithPrice) {
-            console.log(hotelWithPrice);
             self.selectedEventIte.hotels.push(hotelWithPrice);
           })
         })
-        console.log(searchHotel, 'hotels nearby');
       })
       DataService.lookUpAirportByLatLong(item.location.lat, item.location.long)
         .then(function (airport) {

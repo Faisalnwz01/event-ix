@@ -76,12 +76,16 @@
       </div>
       <div ng-repeat="flight in ctrl.selectedEventIte.flights.offers track by $index ">
         <div layout="row">
-          <p flex="20">
-            {{ctrl.legsLookup(flight.legIds[0], 'departureAirportCode')}}
-          </p>
-          <p flex="20">
-            {{ctrl.legsLookup(flight.legIds[0], 'arrivalAirportCode')}}
-          </p>
+          <div flex="20">
+            <p ng-repeat="leg in flight.legIds">
+              {{ctrl.legsLookup(leg, 'departureAirportCode')}}
+            </p>
+          </div>
+          <div flex="20">
+            <p ng-repeat="leg in flight.legIds">
+              {{ctrl.legsLookup(leg, 'arrivalAirportCode')}}
+            </p>
+          </div>
           <p flex="20">
             {{flight.numberOfTickets}}
           </p>

@@ -50,6 +50,8 @@
       var url= flightsUrl + 'departureAirport='+ departureAirport + '&arrivalAirport=' + arrivalAirport + '&departureDate=' + date + '&apikey=BAGEROtURYYysKTHQIE7HK5m0tOFIjSH';
       return $http.get(url).then(function (data) {
         console.log(data);
+        debugger
+        
         return data.data;
       })
     }
