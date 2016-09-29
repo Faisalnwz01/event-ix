@@ -1,0 +1,181 @@
+<ion-view view-title="Playlists">
+  <ion-content class="padding">
+    <div>
+
+      <h5>Manual Search</h5>
+      <div layout="row" layout-align="space-between">
+        <md-autocomplete
+          md-search-text-change="ctrl.searchDepartureChange(ctrl.departureAirport)"
+          md-search-text="ctrl.departureAirport"
+          md-selected-item-change="ctrl.selectedDepartureChange(item)"
+          md-items="item in ctrl.airportCode"
+          placeholder="Departure">
+          <md-item-template>
+            <span md-highlight-text="ctrl.departureAirport" md-highlight-flags="^i">{{item}}</span>
+          </md-item-template>
+          <md-not-found>
+            No states matching "{{ctrl.departureAirport}}" were found.
+            <a ng-click="ctrl.newState(ctrl.departureAirport)">Create a new one!</a>
+          </md-not-found>
+        </md-autocomplete>
+
+        <md-autocomplete md-search-text-change="ctrl.searchArrivalChange(ctrl.arrivalAirport)" md-search-text="ctrl.arrivalAirport" md-selected-item-change="ctrl.selectedArrivalChange(item)" md-items="item in ctrl.airportCode" placeholder="Arrival">
+          <md-item-template>
+            <span md-highlight-text="ctrl.arrivalAirport" md-highlight-flags="^i">{{item}}</span>
+          </md-item-template>
+          <md-not-found>
+            No states matching "{{ctrl.arrivalAirport}}" were found.
+            <a ng-click="ctrl.newState(ctrl.arrivalAirport)">Create a new one!</a>
+          </md-not-found>
+        </md-autocomplete>
+
+        <div>
+          <md-datepicker ng-model="ctrl.selectedDate" md-placeholder="Enter date"></md-datepicker>
+        </div>
+      </div>
+      <br/>
+      <md-button class="button" ng-click="ctrl.searchForFlights()">Submit</md-button>
+    </div>
+    <div>
+      <h5>Event Search</h5>
+      <div layout="row" layout-align="space-between">
+        <md-autocomplete md-search-text="ctrl.selectedEvent.name" md-selected-item-change="ctrl.selectedEventChange(item)" md-items="item in ctrl.events" placeholder="Events">
+          <md-item-template>
+            <span md-highlight-text="ctrl.selectedEvent" md-highlight-flags="^i">{{item.name}}</span>
+          </md-item-template>
+          <md-not-found>
+            No matching Events"{{ctrl.selectedEvent}}" were found.
+            <a ng-click="ctrl.newState(ctrl.selectedEvent)">Create a new one!</a>
+          </md-not-found>
+        </md-autocomplete>
+      </div>
+      <br/>
+    </div>
+    <h4>{{ctrl.selectedEvent}}</h4>
+    <md-card ng-if="ctrl.selectedEvent.name" class="padding">
+      <h5>Selected Event flights</h5>
+      <div layout="row">
+        <p flex="20">
+          From
+        </p>
+        <p flex="20">
+          To
+        </p>
+        <p flex="20">
+          number Of Tickets
+        </p>
+        <p flex="20">
+          airline Name
+        </p>
+        <p flex="20">
+          flight Number
+        </p>
+        <p flex="20">
+          Flight Price
+        </p>
+      </div>
+      <div ng-repeat="flight in ctrl.selectedEventIte.flights.offers track by $index ">
+        <div layout="row">
+          <p flex="20">
+            {{ctrl.legsLookup(flight.legIds[0], 'departureAirportCode')}}
+          </p>
+          <p flex="20">
+            {{ctrl.legsLookup(flight.legIds[0], 'arrivalAirportCode')}}
+          </p>
+          <p flex="20">
+            {{flight.numberOfTickets}}
+          </p>
+          <p flex="20">
+            {{ctrl.legsLookup(flight.legIds[0], 'airlineName')}}
+          </p>
+          <p flex="20">
+            {{ctrl.legsLookup(flight.legIds[0], 'flightNumber')}}
+          </p>
+          <p flex="20">
+            {{flight.totalPrice.formattedWholePrice}}
+          </p>
+        </div>
+      </div>
+    </md-card>
+    <md-card ng-if="ctrl.selectedEvent.name" class="padding">
+      <h5>Selected Event Hotels</h5>
+      <div layout="row">
+        <p flex="20">
+          Hotel Name
+        </p>
+        <p flex="20">
+          Hotel City
+        </p>
+        <p flex="20">
+          Number of Nights
+        </p>
+        <p flex="20">
+          check In Date
+        </p>
+        <p flex="20">
+          check out Date
+        </p>
+        <p flex="20">
+          Rating
+        </p>
+      </div>
+      <div ng-repeat="hotel in ctrl.selectedEventIte.hotels track by hotel.hotelId">
+        <div layout="row">
+          <p flex="20">
+            {{hotel.hotelName}}
+          </p>
+          <p flex="20">
+            {{hotel.hotelCity}}
+          </p>
+          <p flex="20">
+            {{hotel.numberOfNights}}
+          </p>
+          <p flex="20">
+            {{hotel.checkInDate}}
+          </p>
+          <p flex="20">
+            {{hotel.checkOutDate}}
+          </p>
+          <p flex="20">
+            {{hotel.hotelGuestRating}}
+          </p>
+        </div>
+        <div layout="row">
+          <p flex="20">
+            Room Information
+          </p>
+          <p flex="20">
+            Rate Change
+          </p>
+          <p flex="20">
+            non Refundable
+          </p>
+          <p flex="20">
+            Bed Type
+          </p>
+          <p flex="20">
+            Hotel Rate for
+            {{hotel.numberOfNights}}
+            Nights
+          </p>
+        </div>
+        <div layout="row" ng-repeat="hotelRoom in hotel.hotelRoomResponse">
+          <p flex="20"></p>
+          <p flex="20">
+            {{hotelRoom.rateChange}}
+          </p>
+          <p flex="20">
+            {{hotelRoom.nonRefundable}}
+          </p>
+          <p flex="20">
+            {{hotelRoom.bedTypes[0].description}}
+          </p>
+          <p flex="20">
+            {{hotelRoom.rateInfo.chargeableRateInfo.formattedTotalPriceWithMandatoryFees}}
+          </p>
+        </div>
+
+      </div>
+    </md-card>
+  </ion-content>
+</ion-view>
